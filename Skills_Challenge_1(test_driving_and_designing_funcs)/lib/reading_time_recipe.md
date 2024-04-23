@@ -1,0 +1,128 @@
+# estimate_reading_time Function Design Recipe
+
+## 1. Describe the Problem
+
+As a user
+So that I can manage my time
+I want to see an estimate of reading time for a text, assuming that I can read 200 words a minute.
+
+## 2. Design the Function Signature
+
+_Include the name of the function, its parameters, return value, and side effects._
+
+```python
+
+def estimate_reading_time(text):
+    """ Estimates time in minutes taken to read a given text and assuming 200wpm reading speed
+
+    Parameters:
+        text: a string for which reading time estimate is required
+
+    Returns: string representing minutes estimated to read given text, rounded to the nearest minute.
+
+    Side effects: None"""
+    pass 
+```
+
+## 3. Create Examples as Tests
+
+_Make a list of examples of what the function will take and return._
+
+```python
+"""
+Given a string of 5 words separated by spaces with no full stop,
+it returns 0 minutes (5/200 = 0.025)
+"""
+estimate_reading_time("Here are five short words") => "0 minutes"
+
+"""
+Given a string of 9 words and 2 sentences
+it returns 0 minutes.
+"""
+estimate_reading_time("Here are five short words. Here are more words") => "0 minutes"
+"""
+Given a string of 200 words including many sentences,
+it returns 1 minute (notice singular).
+"""
+estimate_reading_time("""200 words""") => "1 minute"
+
+"""
+Given a string of 300 words,
+it rounds up to 2 minutes (notice plural) (200 wpm * 1.5 mins = 300 words)
+"""
+estimate_reading_time("""300 words""") => "2 minutes"
+
+"""
+Given a string of 2099 words,
+it rounds down to 10 minutes (200 wpm * 10 mins = 2000 words)
+"""
+estimate_reading_time("""2,099 words""") => "10 minutes"
+
+"""
+Given an empty string,
+it throws an Exception
+"""
+estimate_reading_time("") => "No text provided"
+
+```
+
+## 4. Implement the Behaviour
+
+_After each test you write, follow the test-driving process of red, green, refactor to implement the behaviour._
+
+
+```python
+
+from lib.reading_time import *
+"""
+Given a string of 5 words separated by spaces with no full stop,
+it returns 0 minutes (5/200 = 0.025)
+"""
+def test_estimate_reading_time_returns_0_minutes_for_short_text_no_sentences():
+    assert estimate_reading_time("Here are five short words") == "0 minutes"
+
+"""
+Given a string of 9 words and 2 sentences
+it returns 0 minutes.
+"""
+def test_estimate_reading_time_returns_1_minute():
+    assert estimate_reading_time("Here are five short words. Here are more words") == "0 minutes"
+"""
+
+Given a string of 200 words including many sentences,
+it returns 1 minute (notice singular).
+"""
+def test_estimate_reading_time_returns_1_minute_for_200_words():
+    assert estimate_reading_time("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae porta quam, nec fermentum nisl. Donec justo nibh, interdum at tortor sit amet, mollis semper ante. Sed semper accumsan urna, ac pretium magna accumsan ut. Aenean et dui malesuada, blandit elit condimentum, auctor neque. Aliquam ultricies enim ante, ac luctus ex ornare aliquam. In mattis tincidunt mauris, in porta dolor rhoncus eu. Donec tincidunt id erat at imperdiet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec hendrerit neque sit amet enim accumsan fringilla. Curabitur vitae sodales ligula. Donec eget laoreet ligula. Duis sed molestie turpis. Pellentesque gravida tincidunt mi, non pellentesque mauris porta ut. Vivamus accumsan in tortor nec egestas. Etiam a convallis erat. Fusce eget lectus eu lacus tincidunt ultrices ac a dolor. Sed sed augue est. Fusce aliquet metus eu augue pretium, sollicitudin pulvinar velit euismod. Fusce lacus purus, sodales a pellentesque vitae, consequat nec turpis. In eu enim lorem. Proin sit amet arcu dui. Curabitur blandit diam libero, vitae maximus quam laoreet nec. Aliquam sodales posuere dolor, ac consectetur nisl porttitor a. Nam semper aliquet lorem sit amet pulvinar. Vestibulum commodo purus non est dictum, sed vulputate lacus pulvinar. Aenean in augue orci. Mauris ut vulputate.") == "1 minute"
+"""
+Given a string of 300 words,
+it returns 2 minutes (notice plural) (200 wpm * 1.5 mins = 300 words) - rounds up to 2
+"""
+def test_estimate_reading_time_rounds_up_to_2_minutes_for_300_words():
+    assert estimate_reading_time("Donec eleifend neque quis sapien lacinia lobortis. Phasellus ultrices ornare posuere. Aliquam posuere tempor massa, pellentesque interdum sem posuere non. Integer ullamcorper suscipit est. Donec vel laoreet sem. Fusce eget maximus metus. Aliquam vulputate, elit eget cursus varius, mauris ligula hendrerit nulla, sit amet maximus neque quam pretium est. Vivamus imperdiet varius felis, et ornare odio cursus quis. Cras rhoncus lacus diam, at scelerisque odio dictum et. Maecenas euismod, arcu vitae imperdiet tempus, tortor erat congue dui, a hendrerit arcu purus eu ex. Nulla venenatis eleifend turpis eu iaculis. In cursus dolor tincidunt, sodales ipsum at, scelerisque nunc. Donec ultricies odio fermentum imperdiet ullamcorper.Praesent dictum euismod mauris vel suscipit. Sed tempor, lectus et facilisis tristique, leo lectus porta arcu, eget lobortis elit mi vitae diam. Sed varius libero ultrices nibh dignissim malesuada. Donec congue nisi ut leo sollicitudin volutpat. Pellentesque ornare diam sit amet sapien facilisis, a congue magna hendrerit. Sed tempor a purus quis tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec elementum placerat convallis. Morbi non elit vel velit dapibus commodo non ut neque. Duis est sem, rhoncus eget dictum ac, mollis a purus. In ut purus faucibus, tempus dui at, fringilla nulla. Vestibulum ac ultricies neque. Suspendisse potenti. Etiam congue porta condimentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam in dolor eu dui posuere aliquet et a mauris. Maecenas tempus libero sed ex scelerisque, vel cursus metus malesuada. Suspendisse potenti. Sed dignissim semper velit ac porttitor. Maecenas ullamcorper velit ut dui sollicitudin sollicitudin. Praesent aliquet ac urna eu tristique. Pellentesque nec felis quis ipsum posuere ultrices. Cras dui ante, sollicitudin eu metus id, ultrices gravida urna. Suspendisse in finibus turpis. Phasellus porta at lectus in venenatis. Sed finibus mollis purus a imperdiet. Etiam.") == "2 minutes"
+
+"""
+Given a string of 2099 words,
+it rounds down to 10 minutes
+"""
+def test_estimate_reading_time_rounds_down_to_10_minutes_for_2099_words():
+    assert estimate_reading_time("Ut id finibus ante. Donec mattis sem quis dolor cursus malesuada sit amet at nulla. Cras condimentum tincidunt enim, sed tincidunt justo ullamcorper gravida. Nulla at ipsum id ipsum mattis malesuada. Maecenas a ligula viverra, faucibus est non, condimentum enim. Ut sed blandit nisl. Cras rutrum massa vitae tortor tincidunt, quis imperdiet metus luctus. Sed ante augue, elementum nec est eget, pulvinar interdum lacus. Aliquam eleifend odio quis sem volutpat convallis. Cras gravida fringilla ligula nec blandit. Sed nulla dui, auctor non vulputate sed, maximus ut sem. Cras erat arcu, viverra at ligula sed, egestas tincidunt nulla. Ut et rutrum odio, non aliquet nulla. Cras eget pellentesque lacus. Aenean erat leo, auctor non molestie vitae, malesuada et lorem. Nullam elementum elit et eros aliquet, sit amet placerat ante pulvinar. Curabitur bibendum rhoncus eros, sit amet gravida turpis bibendum eu. Ut eleifend consequat convallis. Ut sodales est eu orci sodales, non molestie felis tempor. Quisque eu purus pulvinar, semper nulla at, condimentum ex. Quisque mattis varius enim. In hac habitasse platea dictumst. Nam non nulla bibendum, suscipit tellus sed, posuere libero. Etiam bibendum erat ut ligula dignissim consequat. Sed eget velit egestas, porttitor ante sed, viverra velit. Curabitur lacinia eros risus, tempus ullamcorper nulla pulvinar vel. Praesent eget bibendum lorem. Nulla vulputate semper elit, sit amet mattis lacus eleifend ac. Mauris eu venenatis est. Nulla facilisi. Vivamus pretium malesuada orci et accumsan. Donec iaculis, neque et fringilla maximus, arcu odio hendrerit tortor, et pellentesque mi enim et risus. Morbi ultricies arcu mi, sit amet congue sapien sagittis et. Sed eu elementum quam. Donec nisi libero, imperdiet sit amet neque vitae, cursus tristique nisl. Nunc finibus mattis orci, id posuere nisl ultrices eget. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Curabitur vitae mauris risus. Donec accumsan consequat ligula quis fringilla. Etiam mollis, ex sed egestas cursus, justo erat placerat ex, nec pulvinar lorem magna vel lectus. Aliquam a laoreet libero. Nullam congue pharetra velit vel tempor. Quisque id lorem vitae sem consectetur sodales. Sed sapien lectus, volutpat vel aliquet vel, lobortis sed enim. Vestibulum finibus tellus nulla, id fringilla ante varius vitae. Etiam rhoncus, libero at aliquam maximus, ante turpis scelerisque odio, ac viverra sem augue nec nisl. Nunc lectus ligula, vestibulum id pharetra quis, gravida eu massa. Vestibulum bibendum interdum purus, ac pharetra nunc luctus vitae. Duis vitae aliquet ex. Suspendisse tempor, nisl at tempus viverra, mi augue auctor tortor, eu mollis mauris est a ipsum. Fusce tristique diam sed tortor finibus tristique et sit amet nisi. Donec ligula eros, faucibus et aliquam a, semper non nisl. Maecenas rutrum aliquam odio, id vulputate sapien cursus vel. Quisque hendrerit nisi vitae quam porttitor, sit amet iaculis risus dignissim. Pellentesque tincidunt vitae enim a malesuada. Integer maximus lectus eget luctus consequat. Praesent aliquet massa sed libero condimentum, non dictum ligula pharetra. Nullam ultrices finibus augue, ultricies placerat mi rhoncus ut. Vivamus sed est nec diam ornare porta. In quis ipsum gravida, sollicitudin massa ut, congue eros. Suspendisse potenti. Nullam lacinia ligula in mauris fringilla sollicitudin. Donec congue mollis est ac volutpat. Integer eleifend blandit tortor, ut dignissim purus finibus et. Proin in vehicula leo. Cras tincidunt vitae eros fermentum viverra. Aenean sit amet ipsum leo. Morbi viverra dui volutpat, egestas lacus sit amet, dictum arcu. Nam hendrerit massa a accumsan elementum. In nec mollis sapien. Integer id arcu diam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin tempus, nisl et consequat interdum, elit ante porta tellus, id gravida ante est id justo. Curabitur scelerisque arcu nisl, quis mattis dolor facilisis non. Maecenas cursus eros turpis, sed congue neque vehicula at. Aenean ornare ac ligula sit amet hendrerit. Fusce viverra lorem lacus. Aliquam vel augue lacus. Fusce ultrices nec ex in facilisis. Fusce eleifend eu odio ac sodales. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras fermentum dignissim dolor, nec convallis justo iaculis a. Nulla vel purus et nisl posuere bibendum lobortis quis velit. Vivamus gravida non augue eget feugiat. Curabitur mollis enim nec rutrum scelerisque. Sed ultricies quam fermentum diam finibus sollicitudin. Etiam vehicula malesuada volutpat. Nullam ultrices vitae leo efficitur viverra. Nullam gravida volutpat nisl quis maximus. Nunc accumsan rutrum dolor ut euismod. Suspendisse in elementum ante. Aenean non ultrices felis. In sollicitudin erat hendrerit, luctus urna a, semper est. Maecenas tortor ex, vehicula eget vulputate rhoncus, imperdiet eget sapien. Suspendisse quis nulla eget leo commodo semper. Sed turpis nisi, suscipit sit amet mollis pharetra, venenatis gravida risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Phasellus ac vulputate felis. Phasellus semper turpis eu aliquam tempor. Quisque quis felis sit amet magna fermentum tristique. Ut nunc felis, ullamcorper nec dui eget, molestie pulvinar nunc. Vestibulum felis sem, pellentesque nec est in, finibus sodales mauris. Nunc pharetra congue ipsum. Sed vitae orci pretium, facilisis nibh nec, tempor nisl. Donec non tempus orci, at congue dui. In accumsan dictum purus viverra vestibulum. Phasellus euismod velit risus, nec malesuada tellus ullamcorper at. In sagittis dolor tellus, in vestibulum quam ultricies sollicitudin. Etiam at vestibulum lorem. Nulla porttitor malesuada lectus, vitae feugiat odio vestibulum vitae. Sed eget pellentesque sapien. Pellentesque imperdiet risus a sagittis varius. Phasellus finibus lacus sit amet felis tempus, ut bibendum felis varius. In consequat nulla eget ornare fringilla. Donec finibus quam non justo accumsan, lobortis facilisis nulla egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed vulputate porta magna, pulvinar lacinia nibh bibendum sit amet. Aenean condimentum consequat sapien, a ultricies ante. In malesuada viverra erat, a suscipit odio. Aenean eu velit dui. Maecenas eget lacus hendrerit, congue nisi at, tempus lorem. Etiam at orci gravida ante fermentum semper. Sed fermentum sapien et mauris imperdiet, eget gravida massa luctus. Proin sed ex sem. Aenean egestas tortor nec lacinia feugiat. Fusce vitae suscipit tellus. Sed egestas orci a pulvinar fringilla. Praesent eget ipsum nibh. Mauris consectetur vitae eros sed pellentesque. Donec vitae mi in lectus ultricies pharetra sit amet ut urna. Donec vitae diam efficitur, lacinia lorem in, tempor leo. Donec non felis dapibus, tempor massa in, faucibus diam. Cras sed volutpat metus, sed venenatis lorem. Curabitur sodales finibus felis, eget facilisis ante iaculis quis. Maecenas eu rhoncus purus. Donec vel lectus sit amet ex vulputate tincidunt in sed tortor. Phasellus interdum turpis sollicitudin orci elementum condimentum. Ut tincidunt hendrerit rutrum. Mauris sit amet congue diam, et consectetur odio. Pellentesque ligula nunc, vehicula dictum efficitur quis, rhoncus id turpis. Proin id elit ligula. Duis id est a sem vestibulum tempus nec eget sapien. Sed eu dapibus ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sed urna ligula. Fusce risus tortor, dapibus eget varius malesuada, mattis sit amet arcu. Sed imperdiet varius nibh, condimentum laoreet ipsum euismod fringilla. Proin eleifend ipsum nec iaculis dapibus. Aenean elementum diam et mauris fermentum ultrices. In porttitor massa a ipsum egestas faucibus eget ut elit. Sed venenatis auctor ultrices. Nullam feugiat, sapien volutpat tempor elementum, mauris lacus maximus justo, sed semper dui turpis nec magna. Vivamus luctus libero eu justo posuere efficitur. Nulla lectus ligula, feugiat sit amet justo ac, ultricies blandit massa. Duis quis neque eu ante congue semper nec quis turpis. Praesent congue dui sed malesuada pharetra. Sed libero turpis, interdum et elit vitae, lacinia consectetur ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris nec rhoncus est. Nunc maximus dictum tempor. Pellentesque auctor rutrum tincidunt. Duis sit amet nisl arcu. Ut pretium, leo nec euismod vestibulum, dui erat tempus tortor, in elementum mi arcu non odio. Integer eget diam eros. Vestibulum magna nulla, venenatis non semper vel, pellentesque sit amet augue. Donec sit amet risus lorem. Cras gravida, justo sed interdum ultricies, neque metus pretium risus, sed viverra est felis sit amet augue. Donec felis nisi, sollicitudin malesuada porttitor et, lacinia eget elit. Duis leo nisl, fermentum scelerisque tempor vel, scelerisque egestas sem. Nulla facilisi. Proin convallis tempus libero, sed pellentesque velit aliquet in. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam id enim at velit scelerisque maximus. Sed diam diam, iaculis posuere tristique pretium, venenatis tincidunt diam. Phasellus volutpat, justo quis tincidunt dignissim, nunc nunc congue felis, et aliquet mauris purus eu est. Fusce tempor nisi sed luctus dictum. Pellentesque varius diam ac ligula aliquam, cursus elementum mi molestie. Aliquam erat volutpat. Aenean pretium tempor lectus sed ultrices. Integer facilisis elementum purus at eleifend. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In gravida massa non massa efficitur, vitae scelerisque ante vestibulum. Curabitur in risus sit amet neque tincidunt malesuada. Nunc eleifend eros ac lectus viverra ultrices. Vestibulum venenatis tempor magna, a efficitur erat malesuada sit amet. Nullam efficitur mollis nisi, nec faucibus ligula ornare quis. Etiam quis aliquet augue, in semper odio. Suspendisse quis gravida tellus, eu mollis orci. Maecenas vel magna velit. Suspendisse vel porta urna, eu maximus enim. Suspendisse est nibh, imperdiet quis metus ut, pretium mollis est. Proin tincidunt consequat magna, sit amet consectetur neque auctor convallis. Nullam viverra lacus elit, non varius nulla sagittis feugiat. Nunc nec tellus dapibus, molestie eros nec, consectetur turpis. Mauris consequat diam a purus pulvinar imperdiet. Vivamus vitae ipsum odio. Pellentesque ac blandit ex, non suscipit leo. Nunc sagittis molestie nisl sed scelerisque. Cras a urna elit. Aenean eget mauris quis ante pellentesque cursus eget eu ante. Donec mattis, dolor in feugiat maximus, ipsum diam semper purus, eget placerat eros sapien nec mauris. Sed neque ipsum, molestie ac ullamcorper eget, tempor ut quam. Ut ipsum enim, fermentum et placerat at, aliquam sed tellus. Fusce non tortor auctor nibh fermentum malesuada vel nec risus. Morbi ac ullamcorper nunc, eu vestibulum felis. Sed facilisis urna sed lorem aliquet luctus. Integer accumsan eros neque, non consequat libero condimentum sit amet. Praesent ornare metus sit amet mauris commodo, vitae varius nulla gravida. Donec porta mauris ut lorem vulputate blandit. Cras accumsan sed justo ac dignissim. Fusce id ipsum sit amet nisl vestibulum egestas. Duis consectetur felis tristique mauris blandit, vel euismod purus ultricies. Phasellus lorem turpis, aliquet sed erat sed, pellentesque ultrices magna. Aenean ultrices, mi ac sollicitudin varius, nibh mauris feugiat massa, id dapibus quam ex in dolor. Praesent rutrum suscipit odio in pulvinar. Suspendisse eget scelerisque ante. Etiam viverra imperdiet urna, a dignissim felis scelerisque pharetra. Nam eget mollis ante. In a placerat diam, vitae feugiat nibh. Aliquam quis nunc sit amet risus aliquam placerat quis vel leo. Ut sed mi ac ante placerat placerat a laoreet quam. Nullam sapien ex, pharetra in pulvinar sit amet, dictum suscipit ligula. Aliquam id fermentum velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed tincidunt turpis mattis tempus tristique. Duis at posuere lectus, sit amet iaculis velit. Vestibulum tincidunt, purus vel tincidunt dignissim, ligula urna pellentesque eros, molestie faucibus libero sapien vitae est. Sed auctor nec ipsum non vehicula. Proin ornare, tellus quis dictum dignissim, augue quam efficitur odio, quis fermentum neque magna sed eros. Nam in ante ligula. Morbi finibus vitae lacus in laoreet. Ut dictum blandit nisl suscipit suscipit. Donec ex enim, pharetra eu felis non, dictum bibendum urna. Ut metus ipsum, blandit sed sapien non, vulputate tempus risus. Morbi turpis leo, maximus at sagittis eget, aliquam vel ligula. Aliquam erat volutpat. Maecenas semper quam libero, ut ornare neque venenatis sed. Ut dui leo, cursus et purus eu, eleifend efficitur metus. Suspendisse at turpis laoreet, elementum urna vitae, venenatis odio. Fusce lacinia fermentum tortor, eu fringilla purus finibus id. In egestas vulputate vehicula. Cras diam massa, gravida eget vehicula et, fringilla et nisl. Curabitur elementum sollicitudin leo, a rutrum nisi ornare sed. Nulla sed maximus arcu, consectetur cursus purus. Sed massa ante, hendrerit sit amet rutrum ac, tempus nec nibh. In eu libero erat. Proin metus purus, convallis ut nunc vel, luctus consectetur ipsum. Nunc eget justo consectetur, sodales enim non, hendrerit nulla. Integer non libero cursus elit eleifend ullamcorper id id sapien. Ut porttitor risus leo, id egestas nunc laoreet lacinia. Sed pellentesque eros ut dolor tincidunt fringilla. Maecenas id nisi lectus. Vivamus interdum facilisis viverra. Curabitur ornare facilisis leo, quis suscipit ex tincidunt et. Nullam nisl neque, placerat at dictum et, lacinia vel mauris. Phasellus id congue elit, eleifend imperdiet orci. Nunc quis nisl sit amet leo sodales sagittis. Suspendisse potenti. Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris nec odio porta, tincidunt nulla eu, eleifend mauris. Mauris bibendum dapibus consequat. Fusce pretium semper vulputate. Sed aliquam, lacus nec convallis pretium, sem quam tempor orci, non dignissim elit leo vel justo. Morbi.") == "10 minutes"
+"""
+Given an empty string,
+it throws an Exception
+"""
+import pytest
+def test_estimate_reading_time_throws_exception_if_empty_string():
+    with pytest.raises(Exception, match = r"No text provided"):
+        estimate_reading_time("")
+
+"""
+Given a None value,
+it throws an Exception
+"""
+def test_estimate_reading_time_throws_exception_if_None_provided():
+    with pytest.raises(Exception, match = r"No text provided"):
+        estimate_reading_time()
+```
+
+Ensure all test function names are unique, otherwise pytest will ignore them!
